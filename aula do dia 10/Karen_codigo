@@ -1,0 +1,21 @@
+library(tidyverse)
+
+setwd("C:/Users/24011695/Desktop/Karen_aula_dia10")
+vendas <- read_csv("PS4_GamesSales.csv")
+head(vendas)
+
+vendas_filtradas <- vendas %>%
+  filter(Genre %in% c("Action", "Sports")) %>%
+  group_by(Year, Genre) %>%
+  summarise(vendas_totais = sum(Global, na.rm = TRUE), .groups = "drop")
+
+ggplot(vendas_filtradas, aes(x = Year, y = vendas_totais, color = Genre)) +
+  geom_line(size = 1.2) +
+  geom_point() +
+  labs(
+    title = "Evolução das Vendas Globais dos Jogos PS4 (Action vs Sports)",
+    x = "Ano",
+    y = "Vendas Globais (milhões)",
+    color = "Gênero"
+  ) +
+  theme_minimal()
